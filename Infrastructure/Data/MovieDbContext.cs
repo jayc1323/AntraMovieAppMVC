@@ -1,0 +1,17 @@
+﻿using ApplicationCore.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Infrastructure.Data
+{
+    public class MovieDbContext:DbContext
+    {
+        public MovieDbContext(DbContextOptions<MovieDbContext> options):base(options)
+        {
+            
+        }
+        public DbSet<Genre> Genres { get; set; }
+    }
+}

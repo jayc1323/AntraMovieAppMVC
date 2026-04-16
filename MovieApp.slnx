@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Antra.Training.MovieMVC/Antra.Training.MovieMVC.csproj" />
+  <Project Path="ApplicationCore/ApplicationCore.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+</Solution>
