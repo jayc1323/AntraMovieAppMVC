@@ -1,17 +1,15 @@
-﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ApplicationCore.Entities
 {
-    public class Genre
+    public class Role
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Genre Name is required")]
-        [MaxLength(64)]
+        [Required]
+        [MaxLength(20)]
         public string Name { get; set; }
 
-        public ICollection<MovieGenre> MovieGenres { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

@@ -1,0 +1,181 @@
+@using ApplicationCore.Models.Response
+@model MovieDetailsResponse
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container mt-4">
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <img src="@Model.PosterUrl" alt="@Model.Title" class="img-fluid rounded shadow" />
+        </div>
+
+        <div class="col-md-6">
+            <h2>@Model.Title</h2>
+            @if (!string.IsNullOrEmpty(Model.Tagline))
+            {
+                <p class="text-muted fst-italic">"@Model.Tagline"</p>
+            }
+
+            <div class="mb-2">
+                @foreach (var genre in Model.Genres)
+                {
+                    <span class="badge bg-secondary me-1">@genre</span>
+                }
+            </div>
+
+            @if (Model.Rating.HasValue)
+            {
+                <div class="mb-2">
+                    <span class="badge bg-warning text-dark fs-6">&#9733; @Model.Rating.Value.ToString("0.0")</span>
+                </div>
+            }
+
+            <p class="mt-3">@Model.OverView</p>
+
+            @if (Model.ReleaseDate.HasValue)
+            {
+                <p><strong>Release Date:</strong> @Model.ReleaseDate.Value.ToString("MMMM dd, yyyy")</p>
+            }
+            <p><strong>Language:</strong> @Model.OriginalLanguage?.ToUpper()</p>
+        </div>
+
+        <div class="col-md-3 d-flex flex-column gap-2">
+            <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#buyModal">
+                &#128722; Buy Movie
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                &#9998; Write a Review
+            </button>
+            @if (!string.IsNullOrEmpty(Model.ImdbUrl))
+            {
+                <a href="https://www.imdb.com/title/@Model.ImdbUrl" target="_blank" class="btn btn-warning btn-lg">
+                    IMDb
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <h5 class="mb-3">Movie Facts</h5>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Runtime</strong>
+                    <span>@(Model.RunTime.HasValue ? $"{Model.RunTime} min" : "N/A")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Budget</strong>
+                    <span>@(Model.Budget.HasValue ? $"${Model.Budget.Value:N0}" : "N/A")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Revenue</strong>
+                    <span>@(Model.Revenue.HasValue ? $"${Model.Revenue.Value:N0}" : "N/A")</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <strong>Language</strong>
+                    <span>@Model.OriginalLanguage?.ToUpper()</span>
+                </li>
+            </ul>
+
+            @if (Model.Trailers.Any())
+            {
+                <h5 class="mb-3">Trailers</h5>
+                <ul class="list-group">
+                    @foreach (var trailer in Model.Trailers)
+                    {
+                        <li class="list-group-item">
+                            <a href="@trailer.TrailerUrl" target="_blank">
+                                &#9654; @trailer.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <h5 class="mb-3">Cast</h5>
+            @if (Model.Casts.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var cast in Model.Casts)
+                    {
+                        <li class="list-group-item list-group-item-action">
+                            <a asp-controller="Cast" asp-action="Details" asp-route-id="@cast.Id"
+                               class="d-flex align-items-center text-decoration-none text-dark">
+                                @if (!string.IsNullOrEmpty(cast.ProfilePath))
+                                {
+                                    <img src="@cast.ProfilePath" alt="@cast.Name"
+                                         class="rounded-circle me-3" style="width:48px;height:48px;object-fit:cover;" />
+                                }
+                                <span>@cast.Name</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No cast information available.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="buyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="buyModalLabel">Purchase Movie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>You are about to purchase:</p>
+                <h5>@Model.Title</h5>
+                <p class="fs-4 text-success fw-bold">Price: $@Model.Price.ToString("0.00")</p>
+                <p class="text-muted small">By clicking Purchase, you agree to the terms of service.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success">Purchase</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Write a Review — @Model.Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Rating</label>
+                        <select class="form-select">
+                            @for (int i = 10; i >= 1; i--)
+                            {
+                                <option value="@i">@i — @(i == 10 ? "Masterpiece" : i >= 8 ? "Excellent" : i >= 6 ? "Good" : i >= 4 ? "Average" : "Poor")</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Your Review</label>
+                        <textarea class="form-control" rows="4" placeholder="Write your thoughts about this movie..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Submit Review</button>
+            </div>
+        </div>
+    </div>
+</div>

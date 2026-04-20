@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics;
 
 #nullable disable
 
@@ -22,6 +23,27 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Genres", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Movies",
+                columns: table => new
+                {
+                    Title = table.Column<string>(type: "nvarchar(256)", nullable: false),
+                    TmdbUrl = table.Column<string>(type: "nvarchar(2084)", nullable: false),
+                    OverView = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tagline = table.Column<string>(type: "nvarchar(512)", nullable: false),
+                    OriginalLanguage = table.Column<string>(type: "nvarchar(64)", nullable: false),
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RunTime = table.Column<int>(type: "int", nullable: false),
+                    Budget = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Revenue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BackdropUrl = table.Column<string>(type: "nvarchar(2084)", nullable: false),
+                    PosterUrl = table.Column<string>(type: "nvarchar(2084)", nullable: false),
+                    ImdbUrl = table.Column<string>(type: "nvarchar(2084)", nullable: false),
+
+                }
+
+                                          );
         }
 
         /// <inheritdoc />
