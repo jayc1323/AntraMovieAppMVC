@@ -14,12 +14,12 @@ namespace Infrastructure.Repository
         {
         }
 
-        public Page<Genre> GetGenreByPagination(int pageNumber = 1, int pageSize = 3)
+        public async Task<Page<Genre>> GetGenreByPagination(int pageNumber = 1, int pageSize = 3)
         {
             Page<Genre> page = new Page<Genre>();
             page.PageNumber= pageNumber;
-            page.TotalRecords = GetAll().Count();
-            page.Data = GetAll().Skip((pageNumber-1)*pageSize).Take(pageSize);
+            page.TotalRecords = (await GetAll()).Count();
+            page.Data = (await GetAll()).Skip((pageNumber-1)*pageSize).Take(pageSize);
             return page;
         }
     }

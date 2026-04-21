@@ -18,21 +18,21 @@ namespace Infrastructure.Services
             this.userRepository = userRepository;
         }
 
-        public UserResponse GetUserByEmail(string email)
+        public async Task<UserResponse> GetUserByEmail(string email)
         {
-            User user = userRepository.GetByEmail(email);
+            User user = await userRepository.GetByEmail(email);
             if (user == null) return null;
             return MapToResponse(user);
         }
 
-        public UserResponse GetUserById(int id)
+        public async Task<UserResponse> GetUserById(int id)
         {
-            User user = userRepository.GetById(id);
+            User user = await userRepository.GetById(id);
             if (user == null) return null;
             return MapToResponse(user);
         }
 
-        public int RegisterUser(UserRequest request)
+        public async Task<int> RegisterUser(UserRequest request)
         {
             User user = new User
             {
@@ -43,7 +43,7 @@ namespace Infrastructure.Services
                 DateOfBirth = request.DateOfBirth,
                 IsLocked = false
             };
-            return userRepository.Insert(user);
+            return await userRepository.Insert(user);
         }
 
         private UserResponse MapToResponse(User user)

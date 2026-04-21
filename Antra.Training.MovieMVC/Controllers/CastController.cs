@@ -12,21 +12,21 @@ namespace Antra.Training.MovieMVC.Controllers
             this.castService = castService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var cast = castService.GetCastDetails(id);
+            var cast = await castService.GetCastDetails(id);
             if (cast == null) return NotFound();
             return View(cast);
         }
 
-        public IActionResult ByMovie(int movieId)
+        public async Task<IActionResult> ByMovie(int movieId)
         {
-            var cast = castService.GetCastByMovie(movieId);
+            var cast = await castService.GetCastByMovie(movieId);
             return View(cast);
         }
     }

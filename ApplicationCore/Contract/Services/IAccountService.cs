@@ -8,7 +8,7 @@ namespace ApplicationCore.Contract.Services
 {
     public interface IAccountService
     {
-        UserResponse Login(LoginRequest request);
-        int Register(UserRequest request);
+        Task<UserResponse> Login(LoginRequest request);
+        Task<int> Register(UserRequest request);
     }
 }

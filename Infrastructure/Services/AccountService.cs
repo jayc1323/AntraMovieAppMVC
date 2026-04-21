@@ -18,9 +18,9 @@ namespace Infrastructure.Services
             this.userRepository = userRepository;
         }
 
-        public UserResponse Login(LoginRequest request)
+        public async Task<UserResponse> Login(LoginRequest request)
         {
-            User user = userRepository.GetByEmail(request.Email);
+            User user = await userRepository.GetByEmail(request.Email);
             if (user == null || user.HashedPassword != request.Password) return null;
             return new UserResponse
             {
@@ -33,7 +33,7 @@ namespace Infrastructure.Services
             };
         }
 
-        public int Register(UserRequest request)
+        public async Task<int> Register(UserRequest request)
         {
             User user = new User
             {
@@ -44,7 +44,7 @@ namespace Infrastructure.Services
                 DateOfBirth = request.DateOfBirth,
                 IsLocked = false
             };
-            return userRepository.Insert(user);
+            return await userRepository.Insert(user);
         }
     }
 }

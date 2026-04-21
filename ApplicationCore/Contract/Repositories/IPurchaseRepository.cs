@@ -7,7 +7,7 @@ namespace ApplicationCore.Contract.Repositories
 {
     public interface IPurchaseRepository : IRepository<Purchase>
     {
-        IEnumerable<Purchase> GetPurchasesByUser(int userId);
-        bool HasUserPurchasedMovie(int userId, int movieId);
+        Task<IEnumerable<Purchase>> GetPurchasesByUser(int userId);
+        Task<bool> HasUserPurchasedMovie(int userId, int movieId);
     }
 }

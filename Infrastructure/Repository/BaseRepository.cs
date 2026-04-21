@@ -15,34 +15,34 @@ namespace Infrastructure.Repository
         {
             this.dbContext = dbContext;
         }
-        public int Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            T entity = GetById(id);
+            T entity = await GetById(id);
             if(entity != null)
                 dbContext.Set<T>().Remove(entity);
-            return dbContext.SaveChanges();
+            return await dbContext.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-           return dbContext.Set<T>();
+           return await dbContext.Set<T>().ToListAsync();
         }
 
-        public virtual T GetById(int id)
+        public virtual async Task<T> GetById(int id)
         {
-            return dbContext.Set<T>().Find(id);
+            return await dbContext.Set<T>().FindAsync(id);
         }
 
-        public int Insert(T entity)
+        public async Task<int> Insert(T entity)
         {
             dbContext.Set<T>().Add(entity);
-            return dbContext.SaveChanges();
+            return await dbContext.SaveChangesAsync();
         }
 
-        public int Update(T entity)
+        public async Task<int> Update(T entity)
         {
             dbContext.Set<T>().Entry(entity).State = EntityState.Modified;
-            return dbContext.SaveChanges();
+            return await dbContext.SaveChangesAsync();
         }
     }
 }

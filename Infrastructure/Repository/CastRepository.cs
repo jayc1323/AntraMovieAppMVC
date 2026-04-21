@@ -16,20 +16,20 @@ namespace Infrastructure.Repository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Cast> GetCastByMovie(int movieId)
+        public async Task<IEnumerable<Cast>> GetCastByMovie(int movieId)
         {
-            return _dbContext.MovieCasts
+            return await _dbContext.MovieCasts
                 .Where(mc => mc.MovieId == movieId)
                 .Include(mc => mc.Cast)
                 .Select(mc => mc.Cast)
-                .ToList();
+                .ToListAsync();
         }
 
-        public override Cast GetById(int id)
+        public async override Task<Cast> GetById(int id)
         {
-            return _dbContext.Casts
+            return await _dbContext.Casts
                 .Include(c => c.MovieCasts).ThenInclude(mc => mc.Movie)
-                .FirstOrDefault(c => c.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

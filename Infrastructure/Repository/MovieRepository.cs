@@ -19,48 +19,48 @@ namespace Infrastructure.Repository
             _dbContext = dbContext;
         }
 
-        public IEnumerable<Movie> GetMoviesByGenre(int genreId)
+        public async Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId)
         {
-            return _dbContext.MovieGenres
+            return await _dbContext.MovieGenres
                 .Where(mg => mg.GenreId == genreId)
                 .Include(mg => mg.Movie)
                 .Select(mg => mg.Movie)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Page<Movie> GetMoviesByPagination(int pageNumber = 1, int pageSize = 10)
+        public async Task<Page<Movie>> GetMoviesByPagination(int pageNumber = 1, int pageSize = 10)
         {
             Page<Movie> page = new Page<Movie>();
             page.PageNumber = pageNumber;
-            page.TotalRecords = GetAll().Count();
-            page.Data = GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            page.TotalRecords = (await GetAll()).Count();
+            page.Data = (await GetAll()).Skip((pageNumber - 1) * pageSize).Take(pageSize);
             return page;
         }
 
-        public IEnumerable<Movie> GetTopRatedMovies(int count = 10)
+        public async Task<IEnumerable<Movie>> GetTopRatedMovies(int count = 10)
         {
-            return _dbContext.Movies
+            return await _dbContext.Movies
                 .OrderByDescending(m => m.Rating)
                 .Take(count)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<Movie> GetHighestGrossingMovies()
+        public async Task<IEnumerable<Movie>> GetHighestGrossingMovies()
         {
-            return _dbContext.Movies
+            return await _dbContext.Movies
                 .OrderByDescending(m => m.Revenue)
                 .Take(10)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Movie GetMovieById(int id)
+        public async Task<Movie> GetMovieById(int id)
         {
-            return _dbContext.Movies
+            return await _dbContext.Movies
                 .Include(m => m.MovieGenres).ThenInclude(mg => mg.Genre)
                 .Include(m => m.MovieCasts).ThenInclude(mc => mc.Cast)
                 .Include(m => m.Trailers)
                 .Include(m => m.MovieCrews).ThenInclude(mc => mc.Crew)
-                .FirstOrDefault(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
     }
 }

@@ -7,6 +7,8 @@ using ApplicationCore.Models.Request;
 using ApplicationCore.Models.Response;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Text;
 
 namespace Infrastructure.Services
@@ -20,9 +22,9 @@ namespace Infrastructure.Services
             this.movieRepository = movieRepository;
         }
 
-        public IEnumerable<MovieCardModel> GetMovieCards()
+        public async Task<IEnumerable<MovieCardModel>> GetMovieCards()
         {
-            return movieRepository.GetHighestGrossingMovies()
+            return (await movieRepository.GetHighestGrossingMovies())
                 .Select(m => new MovieCardModel
                 {
                     Id = m.Id,
@@ -32,7 +34,7 @@ namespace Infrastructure.Services
                 });
         }
 
-        public int AddMovie(MovieRequest request)
+        public async Task<int> AddMovie(MovieRequest request)
         {
             Movie movie = new Movie
             {
@@ -49,12 +51,12 @@ namespace Infrastructure.Services
                 PosterUrl = request.PosterUrl,
                 ImdbUrl = request.ImdbUrl
             };
-            return movieRepository.Insert(movie);
+            return await movieRepository.Insert(movie);
         }
 
-        public MovieDetailsResponse GetMovieDetails(int movieId)
+        public async Task<MovieDetailsResponse>  GetMovieDetails(int movieId)
         {
-            Movie movie = movieRepository.GetMovieById(movieId);
+            Movie movie = await movieRepository.GetMovieById(movieId);
             if (movie == null) return null;
 
             var response = new MovieDetailsResponse
@@ -114,9 +116,9 @@ namespace Infrastructure.Services
             return response;
         }
 
-        public Page<MovieResponse> GetMoviesByPagination(int pageNumber = 1, int pageSize = 10)
+        public async Task<Page<MovieResponse>> GetMoviesByPagination(int pageNumber = 1, int pageSize = 10)
         {
-            Page<Movie> moviePage = movieRepository.GetMoviesByPagination(pageNumber, pageSize);
+            Page<Movie> moviePage = await movieRepository.GetMoviesByPagination(pageNumber, pageSize);
             List<MovieResponse> responses = new List<MovieResponse>();
             foreach (Movie item in moviePage.Data)
             {
@@ -134,6 +136,21 @@ namespace Infrastructure.Services
                 PageNumber = pageNumber,
                 TotalRecords = moviePage.TotalRecords,
                 Data = responses
+            };
+        }
+
+        public async Task<PaginatedResultSet<Movie>> GetMoviesByGenrePagination(int genreId, int pageSize = 30, int pageNumber = 1)
+        {
+            var movies = await movieRepository.GetMoviesByGenre(genreId);
+            var count = movies.Count();
+            var pagedMovies = movies.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedResultSet<Movie>
+            {
+                PageIndex = pageNumber,
+                PageSize = pageSize,
+                TotalCount = count,
+                TotalPages = (int)Math.Ceiling(count / (double)pageSize),
+                Data = pagedMovies
             };
         }
     }

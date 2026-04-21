@@ -1,0 +1,40 @@
+@model ApplicationCore.Helper.PaginatedResultSet<ApplicationCore.Entities.Movie>
+@{
+    ViewData["Title"] = "Movies By Genre";
+    int genreId = ViewBag.GenreId ?? 0;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var movie in Model.Data)
+        {
+            var movieCard = new ApplicationCore.Models.MovieCardModel
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                PosterUrl = movie.PosterUrl,
+                Price = 9.99m
+            };
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <partial name="_MovieCard" model="@movieCard" />
+            </div>
+        }
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="MoviesByGenre" asp-route-id="@genreId" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+
+            <li class="page-item disabled">
+                <span class="page-link">Page @Model.PageIndex of @Model.TotalPages</span>
+            </li>
+
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="MoviesByGenre" asp-route-id="@genreId" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>

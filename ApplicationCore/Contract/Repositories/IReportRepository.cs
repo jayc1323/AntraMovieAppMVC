@@ -6,8 +6,8 @@ namespace ApplicationCore.Contract.Repositories
 {
     public interface IReportRepository
     {
-        IEnumerable<ReportEntry> GetPurchaseReport();
-        IEnumerable<ReportEntry> GetTopPurchasedMovies(int count = 10);
+        Task<IEnumerable<ReportEntry>> GetPurchaseReport();
+        Task<IEnumerable<ReportEntry>> GetTopPurchasedMovies(int count = 10);
     }
 
     public class ReportEntry

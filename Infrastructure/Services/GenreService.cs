@@ -18,17 +18,17 @@ namespace Infrastructure.Services
         {
             this.genreRepository = genreRepository;
         }
-        public int AddGenre(GenreRequest request)
+        public async Task<int> AddGenre(GenreRequest request)
         {
             Genre genre = new Genre { 
             Name= request.Name
             };
-          return genreRepository.Insert(genre);
+          return await genreRepository.Insert(genre);
         }
 
-        public Page<GenreResponse> GetPage(int pageNumber, int pageSize)
+        public async Task<Page<GenreResponse>> GetPage(int pageNumber, int pageSize)
         {
-          Page<Genre> genreRepoPage=  genreRepository.GetGenreByPagination(pageNumber, pageSize);
+          Page<Genre> genreRepoPage=  await genreRepository.GetGenreByPagination(pageNumber, pageSize);
 
             List<GenreResponse> responses = new();
             foreach (Genre item in genreRepoPage.Data)

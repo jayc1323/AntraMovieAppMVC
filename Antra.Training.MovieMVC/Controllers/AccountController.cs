@@ -8,22 +8,22 @@ namespace Antra.Training.MovieMVC.Controllers
     {
         private readonly IAccountService accountService;
 
-        public AccountController(IAccountService accountService)
+        public  AccountController(IAccountService accountService)
         {
             this.accountService = accountService;
         }
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Login(LoginRequest request)
+        public async Task<IActionResult>     Login(LoginRequest request)
         {
             if (ModelState.IsValid)
             {
-                var user = accountService.Login(request);
+                var user = await accountService.Login(request);
                 if (user != null)
                     return RedirectToAction("Index", "Home");
                 ModelState.AddModelError("", "Invalid email or password.");
@@ -31,23 +31,23 @@ namespace Antra.Training.MovieMVC.Controllers
             return View(request);
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(UserRequest request)
+        public async Task<IActionResult> Register(UserRequest request)
         {
             if (ModelState.IsValid)
             {
-                accountService.Register(request);
+                await accountService.Register(request);
                 return RedirectToAction("Login");
             }
             return View(request);
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             return RedirectToAction("Index", "Home");
         }

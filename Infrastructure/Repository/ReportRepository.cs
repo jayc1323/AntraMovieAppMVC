@@ -17,21 +17,21 @@ namespace Infrastructure.Repository
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<ReportEntry> GetPurchaseReport()
+        public async Task<IEnumerable<ReportEntry>> GetPurchaseReport()
         {
-            return dbContext.Purchases
+            return await dbContext.Purchases
                 .GroupBy(p => p.MovieId)
                 .Select(g => new ReportEntry
                 {
                     MovieTitle = dbContext.Movies.Where(m => m.Id == g.Key).Select(m => m.Title).FirstOrDefault(),
                     PurchaseCount = g.Count(),
                     TotalRevenue = g.Sum(p => p.TotalPrice)
-                }).ToList();
+                }).ToListAsync();
         }
 
-        public IEnumerable<ReportEntry> GetTopPurchasedMovies(int count = 10)
+        public async Task<IEnumerable<ReportEntry>> GetTopPurchasedMovies(int count = 10)
         {
-            return GetPurchaseReport().OrderByDescending(r => r.PurchaseCount).Take(count).ToList();
+            return (await GetPurchaseReport()).OrderByDescending(r => r.PurchaseCount).Take(count).ToList();
         }
     }
 }

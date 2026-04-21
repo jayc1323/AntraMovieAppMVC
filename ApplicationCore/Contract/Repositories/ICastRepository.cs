@@ -7,6 +7,6 @@ namespace ApplicationCore.Contract.Repositories
 {
     public interface ICastRepository : IRepository<Cast>
     {
-        IEnumerable<Cast> GetCastByMovie(int movieId);
+        Task<IEnumerable<Cast>> GetCastByMovie(int movieId);
     }
 }

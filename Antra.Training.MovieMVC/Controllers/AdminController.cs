@@ -13,37 +13,37 @@ namespace Antra.Training.MovieMVC.Controllers
             this.adminService = adminService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = adminService.GetAllUsers();
+            var users = await adminService.GetAllUsers();
             return View(users);
         }
 
-        public IActionResult AddMovie()
+        public async Task<IActionResult> AddMovie()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddMovie(MovieRequest request)
+        public async Task<IActionResult> AddMovie(MovieRequest request)
         {
             if (ModelState.IsValid)
             {
-                adminService.AddMovie(request);
+                await adminService.AddMovie(request);
                 return RedirectToAction("Index");
             }
             return View(request);
         }
 
-        public IActionResult LockUser(int id)
+        public async Task<IActionResult> LockUser(int id)
         {
-            adminService.LockUser(id);
+            await adminService.LockUser(id);
             return RedirectToAction("Index");
         }
 
-        public IActionResult UnlockUser(int id)
+        public async Task<IActionResult> UnlockUser(int id)
         {
-            adminService.UnlockUser(id);
+            await adminService.UnlockUser(id);
             return RedirectToAction("Index");
         }
     }

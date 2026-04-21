@@ -18,9 +18,9 @@ namespace Infrastructure.Services
             this.castRepository = castRepository;
         }
 
-        public IEnumerable<CastResponse> GetCastByMovie(int movieId)
+        public async Task<IEnumerable<CastResponse>> GetCastByMovie(int movieId)
         {
-            return castRepository.GetCastByMovie(movieId).Select(c => new CastResponse
+            return (await castRepository.GetCastByMovie(movieId)).Select(c => new CastResponse
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -30,9 +30,9 @@ namespace Infrastructure.Services
             }).ToList();
         }
 
-        public CastDetailsResponse GetCastDetails(int castId)
+        public async Task<CastDetailsResponse> GetCastDetails(int castId)
         {
-            Cast cast = castRepository.GetById(castId);
+            Cast cast = await castRepository.GetById(castId);
             if (cast == null) return null;
 
             var response = new CastDetailsResponse

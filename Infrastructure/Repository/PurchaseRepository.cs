@@ -14,14 +14,14 @@ namespace Infrastructure.Repository
         {
         }
 
-        public IEnumerable<Purchase> GetPurchasesByUser(int userId)
+        public async Task<IEnumerable<Purchase>> GetPurchasesByUser(int userId)
         {
-            return GetAll().Where(p => p.UserId == userId).ToList();
+            return (await GetAll()).Where(p => p.UserId == userId).ToList();
         }
 
-        public bool HasUserPurchasedMovie(int userId, int movieId)
+        public async Task<bool> HasUserPurchasedMovie(int userId, int movieId)
         {
-            return GetAll().Any(p => p.UserId == userId && p.MovieId == movieId);
+            return (await GetAll()).Any(p => p.UserId == userId && p.MovieId == movieId);
         }
     }
 }

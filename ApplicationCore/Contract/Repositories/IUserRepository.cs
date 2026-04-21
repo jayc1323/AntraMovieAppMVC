@@ -7,6 +7,6 @@ namespace ApplicationCore.Contract.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        User GetByEmail(string email);
+        Task<User> GetByEmail(string email);
     }
 }

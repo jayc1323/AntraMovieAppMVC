@@ -21,7 +21,7 @@ namespace Infrastructure.Services
             this.movieRepository = movieRepository;
         }
 
-        public int AddMovie(MovieRequest request)
+        public async Task<int> AddMovie(MovieRequest request)
         {
             Movie movie = new Movie
             {
@@ -38,12 +38,12 @@ namespace Infrastructure.Services
                 PosterUrl = request.PosterUrl,
                 ImdbUrl = request.ImdbUrl
             };
-            return movieRepository.Insert(movie);
+            return await movieRepository.Insert(movie);
         }
 
-        public IEnumerable<UserResponse> GetAllUsers()
+        public async Task<IEnumerable<UserResponse>> GetAllUsers()
         {
-            return userRepository.GetAll().Select(u => new UserResponse
+            return (await userRepository.GetAll()).Select(u => new UserResponse
             {
                 Id = u.Id,
                 FirstName = u.FirstName,
@@ -54,21 +54,21 @@ namespace Infrastructure.Services
             }).ToList();
         }
 
-        public bool LockUser(int userId)
+        public async Task<bool> LockUser(int userId)
         {
-            User user = userRepository.GetById(userId);
+            User user = await userRepository.GetById(userId);
             if (user == null) return false;
             user.IsLocked = true;
-            userRepository.Update(user);
+            await userRepository.Update(user);
             return true;
         }
 
-        public bool UnlockUser(int userId)
+        public async Task<bool> UnlockUser(int userId)
         {
-            User user = userRepository.GetById(userId);
+            User user = await userRepository.GetById(userId);
             if (user == null) return false;
             user.IsLocked = false;
-            userRepository.Update(user);
+            await userRepository.Update(user);
             return true;
         }
     }

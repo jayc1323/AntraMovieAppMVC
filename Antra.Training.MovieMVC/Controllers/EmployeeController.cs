@@ -5,18 +5,18 @@ namespace Antra.Training.MovieMVC.Controllers
 {
     public class EmployeeController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Employee employee) {
+        public async Task<IActionResult> Create(Employee employee) {
             if (ModelState.IsValid)
             {
                 //save the data

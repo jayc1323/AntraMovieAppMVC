@@ -14,22 +14,22 @@ namespace Antra.Training.MovieMVC.Controllers
         {
             this.genreService = genreService;
         }
-        public IActionResult Index(int id=1)
+        public async Task<IActionResult> Index(int id=1)
         {
-           Page<GenreResponse> result = genreService.GetPage(id);
+           Page<GenreResponse> result = await genreService.GetPage(id);
             return View(result);
         }
-        public IActionResult Create() {
+        public async Task<IActionResult> Create() {
             return View();
         }
 
 
         [HttpPost]
-        public IActionResult Create(GenreRequest genreRequest) {
+        public async Task<IActionResult> Create(GenreRequest genreRequest) {
 
             if (ModelState.IsValid) {
 
-                genreService.AddGenre(genreRequest);
+                await genreService.AddGenre(genreRequest);
                 return RedirectToAction("Index");
             }
             return View(genreRequest);

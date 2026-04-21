@@ -12,14 +12,14 @@ namespace Antra.Training.MovieMVC.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
 
-        public IActionResult Profile(int id)
+        public async Task<IActionResult> Profile(int id)
         {
-            var user = userService.GetUserById(id);
+            var user = await userService.GetUserById(id);
             return View(user);
         }
     }

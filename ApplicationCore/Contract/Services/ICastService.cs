@@ -5,7 +5,7 @@ namespace ApplicationCore.Contract.Services
 {
     public interface ICastService
     {
-        IEnumerable<CastResponse> GetCastByMovie(int movieId);
-        CastDetailsResponse GetCastDetails(int castId);
+        Task<IEnumerable<CastResponse>> GetCastByMovie(int movieId);
+        Task<CastDetailsResponse> GetCastDetails(int castId);
     }
 }

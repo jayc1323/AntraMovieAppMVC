@@ -8,9 +8,9 @@ namespace ApplicationCore.Contract.Services
 {
     public interface IAdminService
     {
-        IEnumerable<UserResponse> GetAllUsers();
-        bool LockUser(int userId);
-        bool UnlockUser(int userId);
-        int AddMovie(MovieRequest request);
+        Task<IEnumerable<UserResponse>> GetAllUsers();
+        Task<bool> LockUser(int userId);
+        Task<bool> UnlockUser(int userId);
+        Task<int> AddMovie(MovieRequest request);
     }
 }

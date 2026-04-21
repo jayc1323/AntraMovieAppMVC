@@ -14,9 +14,9 @@ namespace Infrastructure.Repository
         {
         }
 
-        public User GetByEmail(string email)
+        public async Task<User> GetByEmail(string email)
         {
-            return GetAll().FirstOrDefault(u => u.Email == email);
+            return (await GetAll()).FirstOrDefault(u => u.Email == email);
         }
     }
 }

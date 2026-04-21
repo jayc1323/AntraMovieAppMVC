@@ -8,8 +8,8 @@ namespace ApplicationCore.Contract.Services
 {
     public interface IUserService
     {
-        UserResponse GetUserById(int id);
-        UserResponse GetUserByEmail(string email);
-        int RegisterUser(UserRequest request);
+        Task<UserResponse> GetUserById(int id);
+        Task<UserResponse> GetUserByEmail(string email);
+        Task<int> RegisterUser(UserRequest request);
     }
 }

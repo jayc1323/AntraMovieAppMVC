@@ -9,7 +9,7 @@ namespace ApplicationCore.Contract.Services
 {
     public interface IGenreService
     {
-        int AddGenre(GenreRequest request);
-        Page<GenreResponse> GetPage(int pageNumber, int pageSize=3);
+        Task<int> AddGenre(GenreRequest request);
+        Task<Page<GenreResponse>> GetPage(int pageNumber, int pageSize=3);
     }
 }

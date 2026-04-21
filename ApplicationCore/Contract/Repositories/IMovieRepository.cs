@@ -8,10 +8,10 @@ namespace ApplicationCore.Contract.Repositories
 {
     public interface IMovieRepository : IRepository<Movie>
     {
-        Page<Movie> GetMoviesByPagination(int pageNumber = 1, int pageSize = 10);
-        IEnumerable<Movie> GetMoviesByGenre(int genreId);
-        IEnumerable<Movie> GetTopRatedMovies(int count = 10);
-        IEnumerable<Movie> GetHighestGrossingMovies();
-        Movie GetMovieById(int id);
+        Task<Page<Movie>> GetMoviesByPagination(int pageNumber = 1, int pageSize = 10);
+        Task<IEnumerable<Movie>> GetMoviesByGenre(int genreId);
+        Task<IEnumerable<Movie>> GetTopRatedMovies(int count = 10);
+        Task<IEnumerable<Movie>> GetHighestGrossingMovies();
+        Task<Movie> GetMovieById(int id);
     }
 }
